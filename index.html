@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Casa Bella — Fine Dining</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --cream: #F5F0E8;
+    --warm-white: #FDFAF4;
+    --charcoal: #1C1A17;
+    --gold: #C9A84C;
+    --gold-light: #E8C96A;
+    --brown: #5C3D2E;
+    --muted: #8C8070;
+    --font-display: 'Cormorant Garamond', serif;
+    --font-body: 'Jost', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--charcoal);
+    color: var(--cream);
+    font-family: var(--font-body);
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.5rem 4rem;
+    background: linear-gradient(to bottom, rgba(28,26,23,0.95), transparent);
+    transition: background 0.4s;
+  }
+  nav.scrolled { background: rgba(28,26,23,0.98); }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--gold);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    color: var(--cream);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.85;
+    transition: opacity 0.2s, color 0.2s;
+  }
+  .nav-links a:hover { opacity: 1; color: var(--gold); }
+  .nav-reserve {
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 0.55rem 1.5rem;
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .nav-reserve:hover { background: var(--gold); color: var(--charcoal); }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 30% 50%, rgba(201,168,76,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 70% 30%, rgba(92,61,46,0.15) 0%, transparent 50%),
+      linear-gradient(160deg, #0e0d0b 0%, #1C1A17 50%, #241f19 100%);
+  }
+  .hero-lines {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(201,168,76,0.04) 80px),
+      repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(201,168,76,0.04) 80px);
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    text-align: center;
+    animation: fadeUp 1.2s ease both;
+  }
+  .hero-eyebrow {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 1s 0.3s ease both;
+  }
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 10vw, 8rem);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    color: var(--warm-white);
+    margin-bottom: 0.3rem;
+    opacity: 0;
+    animation: fadeUp 1s 0.5s ease both;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+    font-weight: 300;
+  }
+  .hero-subtitle {
+    font-family: var(--font-display);
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--muted);
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 1s 0.7s ease both;
+  }
+  .hero-cta {
+    display: inline-flex; gap: 1.2rem; flex-wrap: wrap; justify-content: center;
+    opacity: 0;
+    animation: fadeUp 1s 0.9s ease both;
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--charcoal);
+    padding: 1rem 2.5rem;
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border: none; cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+  .btn-outline {
+    background: transparent;
+    color: var(--cream);
+    padding: 1rem 2.5rem;
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border: 1px solid rgba(245,240,232,0.3);
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-outline:hover { border-color: var(--cream); background: rgba(245,240,232,0.05); }
+  .hero-scroll {
+    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    opacity: 0; animation: fadeUp 1s 1.3s ease both;
+  }
+  .hero-scroll span { font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted); }
+  .scroll-line {
+    width: 1px; height: 50px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s infinite;
+  }
+
+  /* DIVIDER */
+  .divider {
+    display: flex; align-items: center; gap: 1.5rem;
+    padding: 0 4rem;
+    margin: 1rem 0;
+  }
+  .divider-line { flex: 1; height: 1px; background: rgba(201,168,76,0.2); }
+  .divider-icon { color: var(--gold); font-size: 1.2rem; opacity: 0.6; }
+
+  /* ABOUT */
+  .about {
+    padding: 8rem 4rem;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6rem;
+    align-items: center;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .about-visual {
+    position: relative;
+  }
+  .about-img-frame {
+    width: 100%; aspect-ratio: 3/4;
+    background: linear-gradient(135deg, #2a2520, #1a1815);
+    border: 1px solid rgba(201,168,76,0.15);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .about-img-frame::before {
+    content: '';
+    position: absolute; inset: 12px;
+    border: 1px solid rgba(201,168,76,0.08);
+  }
+  .plate-icon {
+    font-size: 5rem; opacity: 0.15;
+  }
+  .about-badge {
+    position: absolute; bottom: -1.5rem; right: -1.5rem;
+    width: 120px; height: 120px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: var(--charcoal);
+  }
+  .about-badge-num { font-family: var(--font-display); font-size: 2rem; font-weight: 600; line-height: 1; }
+  .about-badge-text { font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+  .section-label {
+    font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    font-weight: 300;
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+    color: var(--warm-white);
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+  .section-body {
+    font-size: 0.95rem;
+    line-height: 1.9;
+    color: var(--muted);
+    margin-bottom: 2rem;
+  }
+
+  /* MENU */
+  .menu-section {
+    padding: 6rem 4rem;
+    background: linear-gradient(180deg, transparent, rgba(201,168,76,0.03), transparent);
+  }
+  .menu-header { text-align: center; margin-bottom: 4rem; }
+  .menu-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+    max-width: 1100px; margin: 0 auto;
+  }
+  .menu-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(201,168,76,0.08);
+    padding: 2.5rem 2rem;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .menu-card:hover {
+    background: rgba(201,168,76,0.04);
+    border-color: rgba(201,168,76,0.2);
+    transform: translateY(-4px);
+  }
+  .menu-card-icon { font-size: 1.8rem; margin-bottom: 1rem; opacity: 0.7; }
+  .menu-card-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem; font-weight: 400;
+    color: var(--warm-white); margin-bottom: 0.75rem;
+  }
+  .menu-card-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.2rem; }
+  .menu-card-price { font-family: var(--font-display); font-size: 1.2rem; color: var(--gold); }
+
+  /* HOURS & CONTACT */
+  .info-section {
+    padding: 6rem 4rem;
+    display: grid; grid-template-columns: 1fr 1px 1fr 1px 1fr; gap: 4rem;
+    max-width: 1100px; margin: 0 auto;
+    align-items: start;
+  }
+  .info-divider { background: rgba(201,168,76,0.15); }
+  .info-block-label {
+    font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.5rem;
+  }
+  .info-block-title {
+    font-family: var(--font-display); font-size: 1.8rem; font-weight: 300;
+    color: var(--warm-white); margin-bottom: 1.2rem;
+  }
+  .info-row { display: flex; justify-content: space-between; margin-bottom: 0.6rem; }
+  .info-day { font-size: 0.85rem; color: var(--muted); }
+  .info-time { font-size: 0.85rem; color: var(--cream); }
+  .info-text { font-size: 0.9rem; color: var(--muted); line-height: 1.8; }
+  .info-text a { color: var(--gold); text-decoration: none; }
+
+  /* RESERVATION */
+  .reserve-section {
+    padding: 8rem 4rem;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .reserve-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, rgba(201,168,76,0.06) 0%, transparent 70%);
+  }
+  .reserve-content { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
+  .reserve-form {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    margin-top: 3rem; text-align: left;
+  }
+  .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+  .form-group.full { grid-column: 1/-1; }
+  .form-label { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+  .form-input {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.15);
+    color: var(--cream);
+    padding: 0.9rem 1rem;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+  .form-input:focus { border-color: var(--gold); }
+  .form-input::placeholder { color: var(--muted); opacity: 0.5; }
+  select.form-input option { background: var(--charcoal); }
+
+  /* FOOTER */
+  footer {
+    padding: 3rem 4rem;
+    border-top: 1px solid rgba(201,168,76,0.1);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-logo { font-family: var(--font-display); font-size: 1.2rem; color: var(--gold); }
+  .footer-text { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.05em; }
+  .footer-links { display: flex; gap: 2rem; }
+  .footer-links a { font-size: 0.75rem; color: var(--muted); text-decoration: none; letter-spacing: 0.1em; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--gold); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 1; transform: scaleY(1); }
+    50% { opacity: 0.4; transform: scaleY(0.7); }
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { display: none; }
+    .about { grid-template-columns: 1fr; padding: 4rem 1.5rem; gap: 3rem; }
+    .menu-grid { grid-template-columns: 1fr; }
+    .info-section { grid-template-columns: 1fr; padding: 4rem 1.5rem; }
+    .info-divider { display: none; }
+    .reserve-form { grid-template-columns: 1fr; }
+    .reserve-section, .menu-section { padding: 4rem 1.5rem; }
+    footer { padding: 2rem 1.5rem; flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">Casa Bella</a>
+  <ul class="nav-links">
+    <li><a href="#about">Our Story</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#hours">Hours</a></li>
+    <li><a href="#reserve">Reserve</a></li>
+  </ul>
+  <button class="nav-reserve" onclick="document.getElementById('reserve').scrollIntoView({behavior:'smooth'})">Reserve a Table</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Est. 2018 · Las Vegas, Nevada</p>
+    <h1 class="hero-title">Casa <em>Bella</em></h1>
+    <p class="hero-subtitle">Where every meal tells a story</p>
+    <div class="hero-cta">
+      <a href="#reserve" class="btn-primary">Reserve a Table</a>
+      <a href="#menu" class="btn-outline">View Menu</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-visual">
+    <div class="about-img-frame">
+      <div class="plate-icon">🍽️</div>
+      <div class="about-badge">
+        <span class="about-badge-num">4.6</span>
+        <span class="about-badge-text">★ Rated</span>
+      </div>
+    </div>
+  </div>
+  <div class="about-text">
+    <p class="section-label">Our Philosophy</p>
+    <h2 class="section-title">Crafted with <em>passion</em>, served with heart</h2>
+    <p class="section-body">We believe that dining is more than a meal — it's an experience to be savoured. Our chefs source the finest local ingredients and transform them into dishes that honour tradition while embracing the new.</p>
+    <p class="section-body">From intimate dinners to celebratory feasts, Casa Bella has been the backdrop to thousands of unforgettable moments since 2018.</p>
+    <a href="#menu" class="btn-outline">Explore Our Menu</a>
+  </div>
+</section>
+
+<div class="divider">
+  <div class="divider-line"></div>
+  <span class="divider-icon">✦</span>
+  <div class="divider-line"></div>
+</div>
+
+<!-- MENU -->
+<section class="menu-section" id="menu">
+  <div class="menu-header">
+    <p class="section-label">Culinary Offerings</p>
+    <h2 class="section-title" style="text-align:center">Our <em>Signature</em> Dishes</h2>
+  </div>
+  <div class="menu-grid">
+    <div class="menu-card">
+      <div class="menu-card-icon">🥩</div>
+      <h3 class="menu-card-title">Prime Ribeye</h3>
+      <p class="menu-card-desc">28-day dry-aged prime ribeye, truffle butter, roasted garlic, seasonal vegetables</p>
+      <span class="menu-card-price">$68</span>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-icon">🦞</div>
+      <h3 class="menu-card-title">Lobster Bisque</h3>
+      <p class="menu-card-desc">Creamy Maine lobster bisque, cognac cream, chive oil, sourdough crostini</p>
+      <span class="menu-card-price">$24</span>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-icon">🍝</div>
+      <h3 class="menu-card-title">Truffle Tagliatelle</h3>
+      <p class="menu-card-desc">House-made tagliatelle, black truffle, parmesan cream, crispy pancetta</p>
+      <span class="menu-card-price">$42</span>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-icon">🥗</div>
+      <h3 class="menu-card-title">Heritage Salad</h3>
+      <p class="menu-card-desc">Heirloom tomatoes, burrata, aged balsamic, micro basil, pistachio crumble</p>
+      <span class="menu-card-price">$18</span>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-icon">🐟</div>
+      <h3 class="menu-card-title">Pan-Seared Halibut</h3>
+      <p class="menu-card-desc">Pacific halibut, lemon caper beurre blanc, sautéed spinach, fingerling potatoes</p>
+      <span class="menu-card-price">$54</span>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-icon">🍮</div>
+      <h3 class="menu-card-title">Crème Brûlée</h3>
+      <p class="menu-card-desc">Classic vanilla bean custard, caramelised sugar, seasonal berry compote</p>
+      <span class="menu-card-price">$14</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider">
+  <div class="divider-line"></div>
+  <span class="divider-icon">✦</span>
+  <div class="divider-line"></div>
+</div>
+
+<!-- INFO -->
+<section class="info-section" id="hours">
+  <div class="info-block">
+    <p class="info-block-label">Opening Hours</p>
+    <h3 class="info-block-title">When to Visit</h3>
+    <div class="info-row"><span class="info-day">Monday – Tuesday</span><span class="info-time">Closed</span></div>
+    <div class="info-row"><span class="info-day">Wednesday – Thursday</span><span class="info-time">5pm – 10pm</span></div>
+    <div class="info-row"><span class="info-day">Friday – Saturday</span><span class="info-time">5pm – 11pm</span></div>
+    <div class="info-row"><span class="info-day">Sunday</span><span class="info-time">4pm – 9pm</span></div>
+  </div>
+  <div class="info-divider"></div>
+  <div class="info-block">
+    <p class="info-block-label">Location</p>
+    <h3 class="info-block-title">Find Us</h3>
+    <p class="info-text">4965 Blue Diamond Rd<br>Las Vegas, NV 89139<br><br><a href="tel:+17024769220">+1 (702) 476-9220</a><br><a href="mailto:hello@casabella.com">hello@casabella.com</a></p>
+  </div>
+  <div class="info-divider"></div>
+  <div class="info-block">
+    <p class="info-block-label">Private Dining</p>
+    <h3 class="info-block-title">Events</h3>
+    <p class="info-text">Host your next celebration in our private dining room. Seats up to 20 guests with bespoke menus crafted by our chef.</p><br>
+    <a href="#reserve" class="btn-outline" style="font-size:0.7rem; padding:0.7rem 1.5rem;">Enquire Now</a>
+  </div>
+</section>
+
+<!-- RESERVE -->
+<section class="reserve-section" id="reserve">
+  <div class="reserve-bg"></div>
+  <div class="reserve-content">
+    <p class="section-label">Book Your Experience</p>
+    <h2 class="section-title">Make a <em>Reservation</em></h2>
+    <p class="section-body">Join us for an unforgettable evening. Reserve your table online or call us directly.</p>
+    <form class="reserve-form" onsubmit="handleReserve(event)">
+      <div class="form-group">
+        <label class="form-label">First Name</label>
+        <input class="form-input" type="text" placeholder="John">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Last Name</label>
+        <input class="form-input" type="text" placeholder="Smith">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Date</label>
+        <input class="form-input" type="date">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Time</label>
+        <select class="form-input">
+          <option>5:00 PM</option>
+          <option>5:30 PM</option>
+          <option>6:00 PM</option>
+          <option>6:30 PM</option>
+          <option>7:00 PM</option>
+          <option>7:30 PM</option>
+          <option>8:00 PM</option>
+          <option>8:30 PM</option>
+          <option>9:00 PM</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Guests</label>
+        <select class="form-input">
+          <option>1 guest</option>
+          <option>2 guests</option>
+          <option>3 guests</option>
+          <option>4 guests</option>
+          <option>5 guests</option>
+          <option>6+ guests</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phone</label>
+        <input class="form-input" type="tel" placeholder="+1 (702) 000-0000">
+      </div>
+      <div class="form-group full">
+        <label class="form-label">Special Requests</label>
+        <input class="form-input" type="text" placeholder="Dietary needs, celebrations, allergies…">
+      </div>
+      <div class="form-group full" style="margin-top:0.5rem">
+        <button type="submit" class="btn-primary" style="width:100%; padding:1.1rem">Confirm Reservation</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">Casa Bella</span>
+  <span class="footer-text">© 2026 Casa Bella. All rights reserved.</span>
+  <div class="footer-links">
+    <a href="#about">About</a>
+    <a href="#menu">Menu</a>
+    <a href="#reserve">Reserve</a>
+  </div>
+</footer>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+  });
+  function handleReserve(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type=submit]');
+    btn.textContent = '✓ Reservation Confirmed!';
+    btn.style.background = '#3B6D11';
+    btn.style.color = '#EAF3DE';
+    setTimeout(() => {
+      btn.textContent = 'Confirm Reservation';
+      btn.style.background = '';
+      btn.style.color = '';
+    }, 3000);
+  }
+</script>
+</body>
+</html>
